@@ -29,7 +29,7 @@
       padding: 20px;
       width: 110px;
       margin: 8px;
-      background-color: rgba(220, 220, 220, 0.6); /* 반투명 회색 */
+      background-color: rgba(220, 220, 220, 0.6);
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
@@ -80,16 +80,16 @@
 
     function updateCountdown() {
       const now = new Date();
-
-      // 한국 시간으로 변환 (UTC+9)
       const koreaNow = new Date(now.getTime() + (9 * 60 * 60 * 1000));
-      const today = new Date(koreaNow.getFullYear(), koreaNow.getMonth(), koreaNow.getDate());
 
-      // 날짜 기준 차이만 계산
-      const diffTime = targetDate - today;
+      // ⬇️ 날짜(연월일)만 비교
+      const todayDateOnly = new Date(koreaNow.getFullYear(), koreaNow.getMonth(), koreaNow.getDate());
+      const targetDateOnly = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate());
+
+      const diffTime = targetDateOnly - todayDateOnly;
       const days = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
-      // 시, 분, 초는 현재 한국 시간 기준
+      // 시, 분, 초는 그냥 현재 시각 기준
       const hours = koreaNow.getHours();
       const minutes = koreaNow.getMinutes();
       const seconds = koreaNow.getSeconds();
@@ -99,7 +99,6 @@
       document.getElementById("minutes").textContent = 59 - minutes;
       document.getElementById("seconds").textContent = 59 - seconds;
 
-      // 날짜+요일 라벨
       const weekday = weekdayNames[targetDate.getDay()];
       const dateText = `${targetDate.getFullYear()}.${String(targetDate.getMonth()+1).padStart(2,'0')}.${String(targetDate.getDate()).padStart(2,'0')} (${weekday})`;
       document.getElementById("date-label").textContent = `D-Day: ${dateText}`;
