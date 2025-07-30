@@ -73,38 +73,33 @@
     </div>
   </div>
 
-  <script>
-    const target = new Date(2025, 11, 31, 23, 59, 59); // 12월 31일 23:59:59 (month는 0부터 시작)
+ <script>
+const target = new Date("2025-12-31T23:59:59+09:00"); // ✅ 시간대 고정
 
-    const weekdayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const weekdayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-    function updateCountdown() {
-      const now = new Date();
+function updateCountdown() {
+  const now = new Date();
 
-      // 날짜 기준 D-Day 계산
-      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-      const targetDayOnly = new Date(target.getFullYear(), target.getMonth(), target.getDate());
-      const diffDate = targetDayOnly - today;
-      const diffDays = Math.floor(diffDate / (1000 * 60 * 60 * 24));
+  const diffTime = target - now;
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  const diffHours = Math.floor((diffTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const diffMinutes = Math.floor((diffTime % (1000 * 60 * 60)) / (1000 * 60));
+  const diffSeconds = Math.floor((diffTime % (1000 * 60)) / 1000);
 
-      // 시간까지 포함한 차이 계산
-      const diffTime = target - now;
-      const diffHours = Math.floor((diffTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const diffMinutes = Math.floor((diffTime % (1000 * 60 * 60)) / (1000 * 60));
-      const diffSeconds = Math.floor((diffTime % (1000 * 60)) / 1000);
+  document.getElementById("days").textContent = diffDays;
+  document.getElementById("hours").textContent = diffHours;
+  document.getElementById("minutes").textContent = diffMinutes;
+  document.getElementById("seconds").textContent = diffSeconds;
 
-      document.getElementById("days").textContent = diffDays;
-      document.getElementById("hours").textContent = diffHours;
-      document.getElementById("minutes").textContent = diffMinutes;
-      document.getElementById("seconds").textContent = diffSeconds;
+  const weekday = weekdayNames[target.getDay()];
+  const label = `D-Day: ${target.getFullYear()}.${String(target.getMonth()+1).padStart(2, '0')}.${String(target.getDate()).padStart(2, '0')} (${weekday})`;
+  document.getElementById("date-label").textContent = label;
+}
 
-      const weekday = weekdayNames[target.getDay()];
-      const label = `D-Day: ${target.getFullYear()}.${String(target.getMonth() + 1).padStart(2, '0')}.${String(target.getDate()).padStart(2, '0')} (${weekday})`;
-      document.getElementById("date-label").textContent = label;
-    }
+updateCountdown();
+setInterval(updateCountdown, 1000);
+</script>
 
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
-  </script>
 </body>
 </html>
