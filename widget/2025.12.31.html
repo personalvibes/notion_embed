@@ -29,7 +29,7 @@
       padding: 20px;
       width: 110px;
       margin: 8px;
-      background-color: rgba(220, 220, 220, 0.6); /* 반투명 회색 */
+      background-color: rgba(220, 220, 220, 0.6);
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
@@ -73,33 +73,9 @@
     </div>
   </div>
 
- <script>
-const target = new Date("2025-12-31T23:59:59+09:00"); // ✅ 시간대 고정
+  <script>
+    const target = new Date("2025-12-31T00:00:00"); // 기본 자정 (UTC 아님)
 
-const weekdayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const weekdayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-function updateCountdown() {
-  const now = new Date();
-
-  const diffTime = target - now;
-  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-  const diffHours = Math.floor((diffTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const diffMinutes = Math.floor((diffTime % (1000 * 60 * 60)) / (1000 * 60));
-  const diffSeconds = Math.floor((diffTime % (1000 * 60)) / 1000);
-
-  document.getElementById("days").textContent = diffDays;
-  document.getElementById("hours").textContent = diffHours;
-  document.getElementById("minutes").textContent = diffMinutes;
-  document.getElementById("seconds").textContent = diffSeconds;
-
-  const weekday = weekdayNames[target.getDay()];
-  const label = `D-Day: ${target.getFullYear()}.${String(target.getMonth()+1).padStart(2, '0')}.${String(target.getDate()).padStart(2, '0')} (${weekday})`;
-  document.getElementById("date-label").textContent = label;
-}
-
-updateCountdown();
-setInterval(updateCountdown, 1000);
-</script>
-
-</body>
-</html>
+    function updateCountdown()
