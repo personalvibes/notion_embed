@@ -29,7 +29,7 @@
       padding: 20px;
       width: 110px;
       margin: 8px;
-      background-color: rgba(220, 220, 220, 0.6);
+      background-color: rgba(220, 220, 220, 0.6); /* 반투명 회색 */
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
@@ -74,34 +74,33 @@
   </div>
 
   <script>
-    const targetDate = new Date("2025-12-31T23:59:59+09:00");
+    const target = new Date(2025, 11, 31, 23, 59, 59); // 12월 31일 23:59:59 (month는 0부터 시작)
 
     const weekdayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
     function updateCountdown() {
       const now = new Date();
-      const koreaNow = new Date(now.getTime() + (9 * 60 * 60 * 1000));
 
-      // ⬇️ 날짜(연월일)만 비교
-      const todayDateOnly = new Date(koreaNow.getFullYear(), koreaNow.getMonth(), koreaNow.getDate());
-      const targetDateOnly = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate());
+      // 날짜 기준 D-Day 계산
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const targetDayOnly = new Date(target.getFullYear(), target.getMonth(), target.getDate());
+      const diffDate = targetDayOnly - today;
+      const diffDays = Math.floor(diffDate / (1000 * 60 * 60 * 24));
 
-      const diffTime = targetDateOnly - todayDateOnly;
-      const days = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      // 시간까지 포함한 차이 계산
+      const diffTime = target - now;
+      const diffHours = Math.floor((diffTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const diffMinutes = Math.floor((diffTime % (1000 * 60 * 60)) / (1000 * 60));
+      const diffSeconds = Math.floor((diffTime % (1000 * 60)) / 1000);
 
-      // 시, 분, 초는 그냥 현재 시각 기준
-      const hours = koreaNow.getHours();
-      const minutes = koreaNow.getMinutes();
-      const seconds = koreaNow.getSeconds();
+      document.getElementById("days").textContent = diffDays;
+      document.getElementById("hours").textContent = diffHours;
+      document.getElementById("minutes").textContent = diffMinutes;
+      document.getElementById("seconds").textContent = diffSeconds;
 
-      document.getElementById("days").textContent = days;
-      document.getElementById("hours").textContent = 23 - hours;
-      document.getElementById("minutes").textContent = 59 - minutes;
-      document.getElementById("seconds").textContent = 59 - seconds;
-
-      const weekday = weekdayNames[targetDate.getDay()];
-      const dateText = `${targetDate.getFullYear()}.${String(targetDate.getMonth()+1).padStart(2,'0')}.${String(targetDate.getDate()).padStart(2,'0')} (${weekday})`;
-      document.getElementById("date-label").textContent = `D-Day: ${dateText}`;
+      const weekday = weekdayNames[target.getDay()];
+      const label = `D-Day: ${target.getFullYear()}.${String(target.getMonth() + 1).padStart(2, '0')}.${String(target.getDate()).padStart(2, '0')} (${weekday})`;
+      document.getElementById("date-label").textContent = label;
     }
 
     updateCountdown();
